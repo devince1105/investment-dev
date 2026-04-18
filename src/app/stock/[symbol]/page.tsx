@@ -290,7 +290,7 @@ export default function StockDetailPage() {
             <>
               <div className="h-[380px] w-full relative">
                 <ResponsiveContainer width="100%" height="100%">
-                  <ComposedChart data={chartData} syncId="yahooSync" onMouseMove={(e) => e && e.activePayload && setHoverData(e.activePayload[0].payload)} onMouseLeave={() => setHoverData(null)}>
+                  <ComposedChart data={chartData} syncId="yahooSync" onMouseMove={(e: any) => e && e.activePayload && setHoverData(e.activePayload[0].payload)} onMouseLeave={() => setHoverData(null)}>
                     <defs>
                       <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
