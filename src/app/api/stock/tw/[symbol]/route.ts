@@ -63,6 +63,8 @@ export async function GET(
       timestamp: qData.updatedAt ?? qData.time ?? new Date().toISOString()
     });
   } catch (err) {
-    return NextResponse.json({ error: 'Server error' }, { status: 502 });
+    const message = err instanceof Error ? err.message : 'Server exception';
+    console.error(`[API] TW Data Fail for ${symbol}: ${message}`);
+    return NextResponse.json({ error: message }, { status: 502 });
   }
 }

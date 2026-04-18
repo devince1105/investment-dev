@@ -78,7 +78,9 @@ export async function GET(
 
     return NextResponse.json({ symbol, period, chartData, source: 'yahoo' });
   } catch (err) {
-    return NextResponse.json({ error: 'Internal Server Error', detail: String(err) }, { status: 500 });
+    const message = err instanceof Error ? err.message : 'Server exception';
+    console.error(`[API] TW Candles Fail for ${symbol}: ${message}`);
+    return NextResponse.json({ error: message }, { status: 502 });
   }
 }
 

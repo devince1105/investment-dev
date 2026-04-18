@@ -263,8 +263,8 @@ export default function TWDashboard() {
       {/* ── Main Content ── */}
       <main className="flex-1 px-4 md:px-6 py-8 space-y-8">
         {/* Info banner - Only show if API not yet successful */}
-        {!isApiConnected && (
-          <div className="p-4 rounded border border-amber-900/40 bg-amber-950/20 flex items-start gap-3 animate-in fade-in slide-in-from-top-2 duration-500">
+        {process.env.NODE_ENV === 'development' && !isApiConnected && (
+          <div className="p-4 rounded border border-amber-900/40 bg-amber-950/20 flex items-start gap-3 mb-6 animate-in fade-in slide-in-from-top-2 duration-500">
             <Shield size={16} className="text-amber-500 shrink-0 mt-0.5" />
             <div className="text-xs text-amber-400/80 font-medium leading-relaxed">
               <span className="font-black text-amber-400">注意：</span>

@@ -398,6 +398,7 @@ export async function GET(
     }
 
     if (!data) {
+      console.error(`[API] US Data Fail for ${symbol}. Tried: ${queries.join(', ')}. Last error: ${lastError}`);
       return NextResponse.json(
         { error: lastError || 'Data unavailable from SerpAPI', triedQueries: queries },
         { status: 502 }
