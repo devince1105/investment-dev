@@ -74,7 +74,7 @@ export async function GET(
       close: quotes.close[i],
       volume: quotes.volume[i] || 0
     })).filter((c: any) => c.close !== null)
-    .sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
+    .sort((a: any, b: any) => new Date(a.time).getTime() - new Date(b.time).getTime());
 
     return NextResponse.json({ symbol, period, chartData, source: 'yahoo' });
   } catch (err) {

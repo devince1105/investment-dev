@@ -175,7 +175,7 @@ export async function GET(
         seen.add(c.time);
         return true;
       })
-      .sort((a, b) => (a.time! < b.time! ? -1 : a.time! > b.time! ? 1 : 0));
+      .sort((a: any, b: any) => (a.time! < b.time! ? -1 : a.time! > b.time! ? 1 : 0));
 
     return NextResponse.json({ symbol, period, chartData: normalized });
   } catch (err) {
