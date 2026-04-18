@@ -328,7 +328,7 @@ export default function StockDetailPage() {
                     <Line yAxisId="price" type="monotone" dataKey="ma250" stroke="#64748b" dot={false} strokeWidth={1} isAnimationActive={false} />
 
                     {maxPriceData && (
-                      <ReferenceDot yAxisId="price" x={maxPriceData.displayTime} y={maxPriceData.high} r={0} isFront>
+                      <ReferenceDot yAxisId="price" x={maxPriceData.displayTime} y={maxPriceData.high} r={0}>
                          <Text x={0} y={-15} fill="#f43f5e" fontSize={12} fontWeight="bold" textAnchor="middle">{maxPriceData.high}</Text>
                       </ReferenceDot>
                     )}
