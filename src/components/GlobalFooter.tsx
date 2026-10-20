@@ -9,7 +9,7 @@ export default function GlobalFooter() {
   // Decide which source text to show based on the route
   const getSourceText = () => {
     if (pathname.includes('/tw')) return '資料來源：富果 Fugle MarketData API';
-    if (pathname.includes('/us')) return '資料來源：Finnhub.io Market API';
+    if (pathname.includes('/us')) return '資料來源：SerpApi（Google Finance）、Yahoo Finance';
     return '資料來源：聚合市場即時數據庫';
   };
 

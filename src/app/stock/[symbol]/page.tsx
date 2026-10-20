@@ -227,6 +227,14 @@ export default function StockDetailPage() {
     return chartData.reduce((prev, curr) => (prev.high > curr.high) ? prev : curr);
   }, [chartData]);
 
+  // 資料時間取最新一根 K 棒，5 分線多顯示時分
+  const lastCandle = chartData.length > 0 ? chartData[chartData.length - 1] : null;
+  const dataTimeLabel = lastCandle
+    ? new Date(lastCandle.time).toLocaleString('zh-TW', period === '1H'
+        ? { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }
+        : { year: 'numeric', month: '2-digit', day: '2-digit' })
+    : '--';
+
   const activeData = hoverData || (chartData.length > 0 ? chartData[chartData.length - 1] : null);
   const changeVal = activeData ? (activeData.close - activeData.open).toFixed(2) : '0';
   const changeColor = parseFloat(changeVal) > 0 ? 'text-rose-500' : (parseFloat(changeVal) < 0 ? 'text-emerald-500' : 'text-slate-400');
@@ -243,7 +251,7 @@ export default function StockDetailPage() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
              <h1 className="text-2xl font-black">{quote?.name || symbol} ({symbol})</h1>
-             <div className="text-xs text-slate-500 uppercase tracking-widest font-black">資料時間：2026/04/17</div>
+             <div className="text-xs text-slate-500 uppercase tracking-widest font-black">資料時間：{dataTimeLabel}</div>
           </div>
           <div className="flex items-center p-0.5 bg-slate-950 border border-slate-800 rounded">
             {[ {id:'1H',l:'5分'}, {id:'1D',l:'日'}, {id:'1W',l:'週'}, {id:'1M',l:'月'} ].map((p) => (

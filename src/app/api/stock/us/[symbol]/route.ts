@@ -339,8 +339,22 @@ function classifyExchange(symbol: string): string {
   return 'NASDAQ'; // reasonable default for unknown US tickers
 }
 
-function findStat(stats: any[], keyword: string): string | null {
+function findStat(stats: any[], ...keywords: string[]): string | null {
   if (!Array.isArray(stats)) return null;
+  const labelOf = (s: any) => String(s?.label ?? s?.title ?? '').toLowerCase();
+  // 先找完全相符的標籤（避免 "High" 對到 "52-wk high"），再退回包含比對
+  for (const keyword of keywords) {
+    const exact = stats.find((s) => labelOf(s) === keyword.toLowerCase());
+    if (exact) return exact?.value ?? exact?.text ?? null;
+  }
+  for (const keyword of keywords) {
+    const found = findStatContaining(stats, keyword);
+    if (found) return found;
+  }
+  return null;
+}
+
+function findStatContaining(stats: any[], keyword: string): string | null {
   const needle = keyword.toLowerCase();
   for (const s of stats) {
     const label = String(s?.label ?? s?.title ?? '').toLowerCase();
@@ -461,25 +475,28 @@ function shapeQuote(data: any, symbol: string) {
   const changePercent = rawChangePct !== null ? movementSign * Math.abs(rawChangePct) : null;
 
   // ── Previous close, day range, market cap, volume (from key_stats)
-  const previousClose = parseNum(findStat(stats, 'Previous close'));
+  // Google Finance 目前回傳 Open / High / Low / Mkt. cap，沒有 Previous close；
+  // 舊格式則是 Day range 與 Market cap，兩種都支援
+  const dayRange = parseRange(findStat(stats, 'Day range'));
+  const highPrice = parseNum(findStat(stats, 'High')) ?? dayRange.high;
+  const lowPrice = parseNum(findStat(stats, 'Low')) ?? dayRange.low;
 
-  const dayRangeStr = findStat(stats, 'Day range');
-  const { low: lowPrice, high: highPrice } = parseRange(dayRangeStr);
+  const previousClose =
+    parseNum(findStat(stats, 'Previous close')) ??
+    (lastPrice !== null && change !== null ? Math.round((lastPrice - change) * 100) / 100 : null);
 
-  const marketCapStr = findStat(stats, 'Market cap');
+  const marketCapStr = findStat(stats, 'Mkt. cap', 'Market cap');
   const marketCap = parseScaled(marketCapStr);
 
-  const volumeStr = findStat(stats, 'Avg volume') || findStat(stats, 'Volume');
+  const volumeStr = findStat(stats, 'Volume', 'Avg. vol.', 'Avg volume');
   const volume = parseScaled(volumeStr);
 
-  // ── Open price: SerpAPI Google Finance doesn't expose an explicit "Open"
-  //    field, so we approximate with the earliest intraday graph point.
-  //    If no intraday points are available (weekends / pre-market), fall
-  //    back to previousClose so the UI shows something reasonable.
+  // ── Open price: prefer the "Open" key stat. Older responses lacked it,
+  //    so fall back to the earliest intraday graph point, then previousClose.
   const firstGraphPrice = graph.length
     ? parseNum(graph[0].price ?? graph[0].value ?? graph[0].close)
     : null;
-  const openPrice = firstGraphPrice ?? previousClose ?? null;
+  const openPrice = parseNum(findStat(stats, 'Open')) ?? firstGraphPrice ?? previousClose ?? null;
 
   // ── Logo priority: SerpAPI thumbnail → hardcoded fallback
   const serpLogo =

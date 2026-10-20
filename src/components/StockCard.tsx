@@ -94,7 +94,7 @@ export default function StockCard({
 
   return (
     <div
-      className="relative flex flex-col p-5 rounded border transition-all duration-500 group hover:-translate-y-1 overflow-hidden"
+      className="@container relative flex flex-col p-5 rounded border transition-all duration-500 group hover:-translate-y-1 overflow-hidden"
       style={{ backgroundColor: '#0f172a', borderColor: '#1e293b' }}
       onMouseEnter={(e) => {
         (e.currentTarget as HTMLDivElement).style.boxShadow = `0 12px 40px -12px ${accentColor}40`;
@@ -164,13 +164,13 @@ export default function StockCard({
       ) : (
         <>
           {/* Price Section */}
-          <div className="flex items-end justify-between mb-5 relative z-10">
+          <div className="flex flex-wrap items-end justify-between gap-x-3 gap-y-1 mb-5 relative z-10">
             <div>
               <div className="text-3xl font-black tabular-nums tracking-tighter" style={{ color: data?.lastPrice ? '#f8fafc' : '#475569' }}>
                 {fmt(data?.lastPrice ?? null)}
               </div>
             </div>
-            <div className="flex flex-col items-end gap-1 mb-1">
+            <div className="flex flex-col items-end gap-1 mb-1 ml-auto">
               <div className="flex items-center gap-1 font-black text-sm" style={{ color: accentColor }}>
                 {isUp && <TrendingUp size={16} />}
                 {isDown && <TrendingDown size={16} />}
@@ -184,7 +184,7 @@ export default function StockCard({
           </div>
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-2 gap-x-4 gap-y-3 pt-3 border-t border-slate-800/50 relative z-10">
+          <div className="grid grid-cols-1 @[15rem]:grid-cols-2 gap-x-3 gap-y-2 @[15rem]:gap-y-3 pt-3 border-t border-slate-800/50 relative z-10">
             <StatRow label="開盤" value={fmt(data?.openPrice ?? null)} />
             <StatRow label="最高" value={fmt(data?.highPrice ?? null)} highlight={upColor} />
             <StatRow label="最低" value={fmt(data?.lowPrice ?? null)} highlight={downColor} />
@@ -206,8 +206,8 @@ export default function StockCard({
 
 function StatRow({ label, value, highlight }: { label: string; value: string; highlight?: string }) {
   return (
-    <div className="flex items-center justify-between">
-      <span className="text-xs font-black uppercase tracking-widest text-slate-600">{label}</span>
+    <div className="flex items-center justify-between gap-1.5">
+      <span className="text-xs font-black uppercase tracking-wider text-slate-600 whitespace-nowrap">{label}</span>
       <span className="text-[12px] font-black tabular-nums" style={{ color: highlight ?? '#94a3b8' }}>{value}</span>
     </div>
   );
