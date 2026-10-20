@@ -18,6 +18,7 @@ interface StockCardProps {
   symbol: string;
   name: string;
   marketType?: 'TW' | 'US';
+  staggerIndex?: number;
   onDataUpdate?: (data: any) => void;
   onRemove?: (symbol: string) => void;
 }
@@ -43,8 +44,15 @@ function fmtCap(value: number | null, marketType: 'TW' | 'US'): string {
   }
 }
 
-export default function StockCard({ symbol, name, marketType = 'TW', onDataUpdate, onRemove }: StockCardProps) {
-  const tw = useTaiwanStock(marketType === 'TW' ? symbol : '', { refreshInterval: 60_000 });
+export default function StockCard({ 
+  symbol, 
+  name, 
+  marketType = 'TW', 
+  staggerIndex = 0,
+  onDataUpdate, 
+  onRemove 
+}: StockCardProps) {
+  const tw = useTaiwanStock(marketType === 'TW' ? symbol : '', { refreshInterval: 60_000, staggerIndex });
   const us = useUSStock(marketType === 'US' ? symbol : '', { refreshInterval: 60_000 });
   
   const { data, error, isLoading, isValidating, refresh } = marketType === 'TW' ? tw : us;

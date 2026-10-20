@@ -24,12 +24,12 @@ export default function Sidebar({ isCollapsed }: SidebarProps) {
   const pathname = usePathname();
 
   return (
-    <aside 
+    <aside
       className={`border-r border-slate-800 bg-[#0f172a]/40 backdrop-blur-xl flex flex-col scrollbar-hide shrink-0 transition-all duration-300 ease-in-out ${
-        isCollapsed ? 'w-20 overflow-y-hidden' : 'w-64 overflow-y-auto'
+        isCollapsed ? 'w-14 overflow-y-hidden' : 'w-64 overflow-y-auto'
       } hidden md:flex`}
     >
-      <nav className={`flex-1 pt-4 pb-8 px-4 space-y-2 ${isCollapsed ? 'items-center' : ''}`}>
+      <nav className={`flex-1 pb-8 space-y-1 ${isCollapsed ? 'pt-3 px-2 items-center' : 'pt-4 px-4 space-y-2'}`}>
         {navItems.map((item) => {
           // Smart path matching for stock detail pages
           let isActive = pathname === item.href;
@@ -45,16 +45,16 @@ export default function Sidebar({ isCollapsed }: SidebarProps) {
               key={item.href}
               href={item.href}
               title={isCollapsed ? item.name : ''}
-              className={`flex items-center rounded-xl transition-all group ${
-                isCollapsed ? 'justify-center w-12 h-12 p-0' : 'justify-between px-4 py-3.5'
+              className={`flex items-center transition-all group ${
+                isCollapsed ? 'justify-center w-10 h-10 p-0 rounded-lg mx-auto' : 'justify-between px-4 py-3.5 rounded-xl'
               } ${
-                isActive 
-                  ? `${item.activeClass} border` 
-                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 border border-transparent'
+                isActive
+                  ? `${item.activeClass}${isCollapsed ? '' : ' border'}`
+                  : `text-slate-400 hover:bg-slate-800/60 hover:text-slate-200${isCollapsed ? '' : ' border border-transparent'}`
               }`}
             >
-              <div className="flex items-center gap-3">
-                <item.icon size={isCollapsed ? 20 : 18} className={isActive ? item.iconClass : 'text-slate-500 group-hover:text-slate-300'} />
+              <div className={`flex items-center ${isCollapsed ? '' : 'gap-3'}`}>
+                <item.icon size={isCollapsed ? 16 : 18} className={isActive ? item.iconClass : 'text-slate-500 group-hover:text-slate-300'} />
                 {!isCollapsed && <span className="text-sm font-black tracking-widest uppercase">{item.name}</span>}
               </div>
               {!isCollapsed && isActive && <ChevronRight size={14} className={item.iconClass} />}

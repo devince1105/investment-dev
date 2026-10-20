@@ -63,7 +63,7 @@ export default function MarketOverview() {
                   </div>
                   <div>
                     <h3 className="text-2xl font-black uppercase tracking-tight text-slate-100">國際市場</h3>
-                    <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-1">US Stock Market (NASDAQ/NYSE)</p>
+                    <p className="text-xs font-bold text-slate-500 uppercase mt-1">US Stock Market (NASDAQ/NYSE)</p>
                   </div>
                   <div className="flex items-center gap-2 text-xs font-bold text-blue-400 uppercase tracking-wide opacity-0 group-hover:opacity-100 transition-all -translate-x-4 group-hover:translate-x-0">
                     進入終端 <ArrowRight size={14} />

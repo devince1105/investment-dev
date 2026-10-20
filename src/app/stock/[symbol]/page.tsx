@@ -26,6 +26,7 @@ import {
 } from 'recharts';
 import useSWR from 'swr';
 import { useTaiwanStock } from '@/hooks/useTaiwanStock';
+import StockListSidebar from '@/components/StockListSidebar';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -233,7 +234,10 @@ export default function StockDetailPage() {
   if (isQuoteLoading) return <div className="min-h-screen bg-[#020617] flex items-center justify-center"><RefreshCw className="animate-spin text-slate-700" size={32} /></div>;
 
   return (
-    <div className="flex flex-col min-h-screen font-sans tracking-tight bg-transparent text-slate-100 italic-none">
+    <div className="flex min-h-screen font-sans tracking-tight bg-transparent text-slate-100 italic-none">
+      <StockListSidebar currentSymbol={symbol} />
+
+      <div className="flex-1 flex flex-col min-w-0">
       {/* Header Info Bar */}
       <div className="px-4 md:px-6 pt-4 space-y-2 border-b border-slate-900 pb-4">
         <div className="flex items-center justify-between">
@@ -366,6 +370,7 @@ export default function StockDetailPage() {
           )}
         </div>
       </main>
+      </div>
     </div>
   );
 }

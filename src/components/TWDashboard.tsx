@@ -45,10 +45,12 @@ import { WATCHLIST, WatchlistItem } from '@/types/stock';
 /* ────────────────────────────────────────────────────────── */
 function SortableStockItem({ 
   item, 
+  index,
   onRemove,
   onDataUpdate
 }: { 
   item: WatchlistItem; 
+  index: number;
   onRemove: (id: string) => void;
   onDataUpdate?: (data: any) => void;
 }) {
@@ -86,6 +88,7 @@ function SortableStockItem({
             name={item.name} 
             onDataUpdate={onDataUpdate}
             marketType="TW"
+            staggerIndex={index}
           />
         </div>
       </Link>
@@ -297,10 +300,11 @@ export default function TWDashboard() {
               strategy={rectSortingStrategy}
               disabled={sortBy !== 'manual'}
             >
-              {sortedWatchlist.map((item) => (
+              {sortedWatchlist.map((item, index) => (
                 <SortableStockItem 
                   key={item.symbol} 
                   item={item} 
+                  index={index}
                   onRemove={handleRemoveStock} 
                   onDataUpdate={(data) => handleDataUpdate(item.symbol, data)}
                 />

@@ -43,3 +43,40 @@ export const WATCHLIST: WatchlistItem[] = [
   { symbol: '0056', name: '元大高股息' },
   { symbol: '00878', name: '國泰永續高股息' },
 ];
+
+/** US watchlist — shared between the US dashboard and the stock-detail sidebar. */
+export const US_WATCHLIST: WatchlistItem[] = [
+  { symbol: 'DIA', name: 'DIA' },
+  { symbol: 'SPY', name: 'SPY' },
+  { symbol: 'QQQ', name: 'QQQ' },
+  { symbol: 'VOO', name: 'VOO' },
+  { symbol: 'TSM', name: 'TSM' },
+  { symbol: 'NVDA', name: 'NVDA' },
+  { symbol: 'AAPL', name: 'AAPL' },
+  { symbol: 'MSFT', name: 'MSFT' },
+  { symbol: 'GOOGL', name: 'GOOGL' },
+  { symbol: 'META', name: 'META' },
+  { symbol: 'AMZN', name: 'AMZN' },
+  { symbol: 'TSLA', name: 'TSLA' },
+  { symbol: 'AVGO', name: 'AVGO' },
+  { symbol: 'PLTR', name: 'PLTR' },
+  { symbol: 'PANW', name: 'PANW' },
+  { symbol: 'MSTR', name: 'MSTR' },
+  { symbol: 'SMCI', name: 'SMCI' },
+  { symbol: 'AMD', name: 'AMD' },
+  { symbol: 'MU', name: 'MU' },
+  { symbol: 'QCOM', name: 'QCOM' },
+  { symbol: 'ASML', name: 'ASML' },
+  { symbol: 'NFLX', name: 'NFLX' },
+  { symbol: 'ADBE', name: 'ADBE' },
+  { symbol: 'V', name: 'V' },
+  { symbol: 'MA', name: 'MA' },
+  { symbol: 'COIN', name: 'COIN' },
+  { symbol: 'BRK.B', name: 'BRK.B' },
+];
+
+/** Detect whether a symbol belongs to the US market (letters/dots only, not a pure number). */
+export function isUSSymbol(symbol: string): boolean {
+  if (!symbol) return false;
+  return /^[A-Z.]+$/.test(symbol) && !/^\d+$/.test(symbol);
+}

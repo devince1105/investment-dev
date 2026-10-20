@@ -83,7 +83,7 @@ export default function GlobalNavbar({ isSidebarCollapsed, onToggleSidebar }: Gl
         <div className="hidden lg:flex items-center gap-6 pr-6 border-r border-slate-800">
           <div className="flex flex-col items-end">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-black tracking-widest text-slate-500">TWSE</span>
+              <span className="text-xs font-black tracking-wider text-slate-500">TWSE</span>
               <div className={`w-1.5 h-1.5 rounded-full ${twseOpen ? 'bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-rose-500 opacity-60'}`} />
             </div>
             <span className={`text-xs font-bold ${twseOpen ? 'text-emerald-400' : 'text-slate-500'}`}>
@@ -92,7 +92,7 @@ export default function GlobalNavbar({ isSidebarCollapsed, onToggleSidebar }: Gl
           </div>
           <div className="flex flex-col items-end">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-black tracking-widest text-slate-500">NASDAQ</span>
+              <span className="text-xs font-black tracking-wider text-slate-500">NASDAQ</span>
               <div className={`w-1.5 h-1.5 rounded-full ${nasdaqOpen ? 'bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-rose-500 opacity-60'}`} />
             </div>
             <span className={`text-xs font-bold ${nasdaqOpen ? 'text-emerald-400' : 'text-slate-500'}`}>

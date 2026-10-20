@@ -33,17 +33,17 @@ export async function GET(
 
   try {
     const quoteUrl = `https://api.fugle.tw/marketdata/v1.0/stock/intraday/quote/${symbol}`;
-    const metaUrl = `https://api.fugle.tw/marketdata/v1.0/stock/intraday/meta/${symbol}`;
+    const tickerUrl = `https://api.fugle.tw/marketdata/v1.0/stock/intraday/ticker/${symbol}`;
 
-    const [quoteRes, metaRes] = await Promise.all([
+    const [quoteRes, tickerRes] = await Promise.all([
       fetch(quoteUrl, { headers: { 'X-API-KEY': apiKey }, cache: 'no-store' }),
-      fetch(metaUrl, { headers: { 'X-API-KEY': apiKey }, cache: 'no-store' })
+      fetch(tickerUrl, { headers: { 'X-API-KEY': apiKey }, next: { revalidate: 3600 } })
     ]);
 
     if (!quoteRes.ok) return NextResponse.json({ error: `Fugle error: ${quoteRes.status}` }, { status: quoteRes.status });
 
     const qData = await quoteRes.json();
-    const mData = metaRes.ok ? await metaRes.json() : null;
+    const tData = tickerRes.ok ? await tickerRes.json() : null;
     
     // Normalize symbol for logo lookup (e.g., 2330.tw -> 2330)
     const lookupKey = symbol.split('.')[0];
@@ -59,7 +59,7 @@ export async function GET(
       previousClose: qData.previousClose ?? null,
       change: qData.change ?? null,
       changePercent: qData.changePercent ?? null,
-      marketCap: mData?.marketCapitalization ?? qData.total?.tradeValue ?? null, 
+      marketCap: tData?.marketValue ?? qData.total?.tradeValue ?? null, 
       timestamp: qData.updatedAt ?? qData.time ?? new Date().toISOString()
     });
   } catch (err) {

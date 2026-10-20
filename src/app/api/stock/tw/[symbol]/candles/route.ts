@@ -80,7 +80,8 @@ export async function GET(
   const { symbol } = await params;
   const period = request.nextUrl.searchParams.get('period') || '1D';
 
-  const apiKey = process.env.FUGLE_API_KEY;
+  const apiKey = process.env.FUGLE_API_KEY || '';
+
   if (!apiKey) {
     return NextResponse.json({ error: 'FUGLE_API_KEY is not configured' }, { status: 500 });
   }
