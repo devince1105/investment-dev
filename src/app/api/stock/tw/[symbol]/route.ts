@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getIssuedShares } from '@/lib/twShares';
 
 export const dynamic = 'force-dynamic';
 
@@ -33,20 +34,19 @@ export async function GET(
 
   try {
     const quoteUrl = `https://api.fugle.tw/marketdata/v1.0/stock/intraday/quote/${symbol}`;
-    const tickerUrl = `https://api.fugle.tw/marketdata/v1.0/stock/intraday/ticker/${symbol}`;
-
-    const [quoteRes, tickerRes] = await Promise.all([
-      fetch(quoteUrl, { headers: { 'X-API-KEY': apiKey }, cache: 'no-store' }),
-      fetch(tickerUrl, { headers: { 'X-API-KEY': apiKey }, next: { revalidate: 3600 } })
-    ]);
+    const quoteRes = await fetch(quoteUrl, { headers: { 'X-API-KEY': apiKey }, cache: 'no-store' });
 
     if (!quoteRes.ok) return NextResponse.json({ error: `Fugle error: ${quoteRes.status}` }, { status: quoteRes.status });
 
     const qData = await quoteRes.json();
-    const tData = tickerRes.ok ? await tickerRes.json() : null;
     
     // Normalize symbol for logo lookup (e.g., 2330.tw -> 2330)
     const lookupKey = symbol.split('.')[0];
+
+    // 總市值 = 已發行股數 × 現價（盤前沒有成交價時用昨收）
+    const issuedShares = await getIssuedShares(lookupKey);
+    const capPrice = qData.lastPrice ?? qData.previousClose ?? null;
+    const marketCap = issuedShares && capPrice ? issuedShares * capPrice : null;
 
     return NextResponse.json({
       symbol: qData.symbol ?? symbol,
@@ -59,7 +59,7 @@ export async function GET(
       previousClose: qData.previousClose ?? null,
       change: qData.change ?? null,
       changePercent: qData.changePercent ?? null,
-      marketCap: tData?.marketValue ?? qData.total?.tradeValue ?? null, 
+      marketCap,
       timestamp: qData.updatedAt ?? qData.time ?? new Date().toISOString()
     });
   } catch (err) {
