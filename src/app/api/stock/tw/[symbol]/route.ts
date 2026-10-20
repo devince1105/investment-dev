@@ -43,7 +43,7 @@ export async function GET(
     // Normalize symbol for logo lookup (e.g., 2330.tw -> 2330)
     const lookupKey = symbol.split('.')[0];
 
-    // 總市值 = 已發行股數 × 現價（盤前沒有成交價時用昨收）
+    // 總市值 = 已發行股數（ETF 為發行單位數）× 現價（盤前沒有成交價時用昨收）
     const issuedShares = await getIssuedShares(lookupKey);
     const capPrice = qData.lastPrice ?? qData.previousClose ?? null;
     const marketCap = issuedShares && capPrice ? issuedShares * capPrice : null;
